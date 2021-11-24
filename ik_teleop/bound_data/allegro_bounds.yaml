@@ -1,0 +1,40 @@
+allegro_bounds:
+  height: 0.0542 
+  
+  index:
+    y: 0.0525
+    z_bounds: 
+      - -0.0391
+      - 0.0794
+
+  middle:
+    y: 0
+    z_bounds: 
+      - -0.0391
+      - 0.0794
+
+  ring:
+    y_bounds: 
+      - -0.0250
+      - -0.0662
+    z_bounds: 
+      - -0.0466
+      - 0.0621
+
+  thumb:
+    # Top left vertex
+    - 
+      - -0.0449
+      - -0.0166
+    # Bottom left vertex
+    - 
+      - -0.01939395
+      - -0.10095483
+    # Bottom right vertex
+    -
+      - 0.0615
+      - -0.0965
+    # Top right vertex
+    -
+      - 0.0935
+      - -0.0051
