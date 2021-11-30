@@ -96,45 +96,42 @@ class DexArmOp(object):
                 desired_joint_angles = copy(self.current_joint_state)
 
                 # Movement for index finger
-                if finger_tip_coords['index'][1] >= self.calibrated_bounds[0][0] and finger_tip_coords['index'][1] <= self.calibrated_bounds[0][1]:
-                    desired_joint_angles = self.ik_solver.bounded_linear_finger_motion(
-                        "index", 
-                        self.allegro_bounds['height'], # X value 
-                        self.allegro_bounds['index']['y'], # Y value
-                        finger_tip_coords['index'][1], # Z value
-                        self.calibrated_bounds[0], 
-                        self.allegro_bounds['index']['z_bounds'], 
-                        self.moving_average_queues['index'], 
-                        desired_joint_angles
-                    )
+                desired_joint_angles = self.ik_solver.bounded_linear_finger_motion(
+                    "index", 
+                    self.allegro_bounds['height'], # X value 
+                    self.allegro_bounds['index']['y'], # Y value
+                    finger_tip_coords['index'][1], # Z value
+                    self.calibrated_bounds[0], 
+                    self.allegro_bounds['index']['z_bounds'], 
+                    self.moving_average_queues['index'], 
+                    desired_joint_angles
+                )
 
-                # Movement for the Middle finger
-                if finger_tip_coords['middle'][1] >= self.calibrated_bounds[1][0] and finger_tip_coords['middle'][1] <= self.calibrated_bounds[1][1]:
-                    desired_joint_angles = self.ik_solver.bounded_linear_finger_motion(
-                        "middle", 
-                        self.allegro_bounds['height'], # X value 
-                        self.allegro_bounds['middle']['y'], # Y value
-                        finger_tip_coords['middle'][1], # Z value
-                        self.calibrated_bounds[0], 
-                        self.allegro_bounds['middle']['z_bounds'], 
-                        self.moving_average_queues['middle'], 
-                        desired_joint_angles
-                    )
+                # # Movement for the Middle finger
+                desired_joint_angles = self.ik_solver.bounded_linear_finger_motion(
+                    "middle", 
+                    self.allegro_bounds['height'], # X value 
+                    self.allegro_bounds['middle']['y'], # Y value
+                    finger_tip_coords['middle'][1], # Z value
+                    self.calibrated_bounds[1], 
+                    self.allegro_bounds['middle']['z_bounds'], 
+                    self.moving_average_queues['middle'], 
+                    desired_joint_angles
+                )
 
                 # Movement for the Ring finger using the ring and pinky fingers
-                if finger_tip_coords['ring'][1] >= self.calibrated_bounds[2][0] and finger_tip_coords['ring'][1] <= self.calibrated_bounds[2][1] and finger_tip_coords['pinky'][1] >= self.calibrated_bounds[3][0] and finger_tip_coords['pinky'][1] <= self.calibrated_bounds[3][1]:
-                    desired_joint_angles = self.ik_solver.bounded_linear_fingers_motion(
-                        "ring", 
-                        self.allegro_bounds['height'], 
-                        finger_tip_coords['pinky'][1], 
-                        finger_tip_coords['ring'][1], 
-                        self.calibrated_bounds[3], # Pinky bound for Allegro Y axis movement
-                        self.calibrated_bounds[2], # Ring bound for Allegro Z axis movement
-                        self.allegro_bounds['ring']['y_bounds'], 
-                        self.allegro_bounds['ring']['z_bounds'], 
-                        self.moving_average_queues['ring'], 
-                        desired_joint_angles
-                    )
+                desired_joint_angles = self.ik_solver.bounded_linear_fingers_motion(
+                    "ring", 
+                    self.allegro_bounds['height'], 
+                    finger_tip_coords['pinky'][1], 
+                    finger_tip_coords['ring'][1], 
+                    self.calibrated_bounds[3], # Pinky bound for Allegro Y axis movement
+                    self.calibrated_bounds[2], # Ring bound for Allegro Z axis movement
+                    self.allegro_bounds['ring']['y_bounds'], 
+                    self.allegro_bounds['ring']['z_bounds'], 
+                    self.moving_average_queues['ring'], 
+                    desired_joint_angles
+                )
 
                 # Movement for the Thumb
                 if cv2.pointPolygonTest(np.float32(self.calibrated_bounds[4:]), np.float32(finger_tip_coords['thumb'][:2]), False) > -1:

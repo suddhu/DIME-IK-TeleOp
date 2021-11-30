@@ -2,24 +2,24 @@ allegro_bounds:
   height: 0.0542 
   
   index:
-    y: 0.0525
+    y: 0.0451
     z_bounds: 
       - -0.0391
-      - 0.0794
+      - 0.08
 
   middle:
     y: 0
     z_bounds: 
       - -0.0391
-      - 0.0794
+      - 0.08
 
   ring:
     y_bounds: 
-      - -0.0250
-      - -0.0662
+      - -0.0075
+      - -0.0714
     z_bounds: 
-      - -0.0466
-      - 0.0621
+      - -0.046
+      - 0.0603
 
   thumb:
     # Top left vertex
