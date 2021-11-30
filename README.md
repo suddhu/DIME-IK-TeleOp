@@ -8,7 +8,7 @@ pip3 install -e .
 - To run the hardware teleop:
 ```
 cd <path-to-this-repository>/ik_teleop
-python3 new_teleop.py
+python3 teleop.py
 ```
 
 - To run the simulation teleop:

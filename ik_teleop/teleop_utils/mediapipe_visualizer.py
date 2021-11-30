@@ -29,10 +29,25 @@ class PlotMediapipeHand(object):
         plt.plot([X[4], X[9]], [Y[4], Y[9]])
         plt.plot([X[5], X[10]], [Y[5], Y[10]])
 
+    def plot_bounds(self):
+        if self.calibration_data is not None:
+            thumb_bounds = self.calibration_data[4:]
+
+            # Plotting the thumb bounds
+            plt.plot([thumb_bounds[0][0], thumb_bounds[1][0]], [thumb_bounds[0][1], thumb_bounds[1][1]])
+            plt.plot([thumb_bounds[1][0], thumb_bounds[2][0]], [thumb_bounds[1][1], thumb_bounds[2][1]])
+            plt.plot([thumb_bounds[2][0], thumb_bounds[3][0]], [thumb_bounds[2][1], thumb_bounds[3][1]])
+            plt.plot([thumb_bounds[3][0], thumb_bounds[0][0]], [thumb_bounds[3][1], thumb_bounds[0][1]])
+
+            # TODO
+            # Plot the bounds for other fingers
+
     def draw(self, X, Y):
         # Plotting the 2D points and lines in the graph
         # Plotting the Joint coordinates
         plt.plot(X, Y, 'ro')
+
+        self.plot_bounds()        
 
         # Plotting the lines to visualize the hand
         self.plot_hand(X, Y)

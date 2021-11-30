@@ -1,3 +1,4 @@
+import os
 import time
 import numpy as np
 from multiprocessing import Process
@@ -11,6 +12,8 @@ from ik_teleop.teleop_utils.mediapipe_visualizer import PlotMediapipeHand
 
 HAND_COORD_TOPIC = '/mediapipe_joint_coords'
 hand_coordinates = None
+
+CALIBRATION_FILE_PATH = os.path.join(os.getcwd(), 'bound_data', 'calibrated_values.npy')
 
 def detector():
     mp_detector = MediapipeJoints()
@@ -30,7 +33,11 @@ def visualizer():
     
     rospy.Subscriber(HAND_COORD_TOPIC, Float64MultiArray, _callback, queue_size = 1)
 
-    hand_vis = PlotMediapipeHand()
+    if os.path.exists(CALIBRATION_FILE_PATH):
+        calibration_values = np.load(CALIBRATION_FILE_PATH)
+        hand_vis = PlotMediapipeHand(calibration_values)
+    else:
+        hand_vis = PlotMediapipeHand()
 
     while True:
         if hand_coordinates is not None:

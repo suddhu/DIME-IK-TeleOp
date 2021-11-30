@@ -25,4 +25,4 @@ jointwise_angle_bounds:
   - 0.2
 
 # Moving average time steps
-time_steps: 1
+time_steps: 3

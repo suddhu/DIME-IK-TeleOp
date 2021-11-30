@@ -80,23 +80,27 @@ class BoundCalibrator(object):
         thumb_bounds = np.zeros((4, 2))
 
         register = input("Press Enter to register the upper right bound for the Thumb finger.")
-        thumb_bounds[3][0] = self.hand_coords[6][0]
-        thumb_bounds[3][1] = self.hand_coords[6][1]
+        thumb_bounds[0][0] = self.hand_coords[6][0]
+        thumb_bounds[0][1] = self.hand_coords[6][1]
+        
         print("Registered upper right bound is {}.\n".format(thumb_bounds[3]))
         
         register = input("Press Enter to register the lower right bound for the Thumb finger.")
-        thumb_bounds[2][0] = self.hand_coords[6][0]
-        thumb_bounds[2][1] = self.hand_coords[6][1]
+        thumb_bounds[1][0] = self.hand_coords[6][0]
+        thumb_bounds[1][1] = self.hand_coords[6][1]
+        
         print("Registered lower right bound is {}.\n".format(thumb_bounds[2]))
 
         register = input("Press Enter to register the lower left bound for the Thumb finger.")
-        thumb_bounds[1][0] = self.hand_coords[6][0]
-        thumb_bounds[1][1] = self.hand_coords[6][1]
+        thumb_bounds[2][0] = self.hand_coords[6][0]
+        thumb_bounds[2][1] = self.hand_coords[6][1]
+
         print("Registered lower left bound is {}.\n".format(thumb_bounds[1]))
 
         register = input("Press Enter to register the upper left bound for the Thumb finger.")
-        thumb_bounds[0][0] = self.hand_coords[6][0]
-        thumb_bounds[0][1] = self.hand_coords[6][1]
+        thumb_bounds[3][0] = self.hand_coords[6][0]
+        thumb_bounds[3][1] = self.hand_coords[6][1]
+
         print("Registered upper left bound is {}.\n".format(thumb_bounds[0]))
 
         print("Registered bounds: \nIndex finger bounds: {}\nMiddle finger bounds: {}\nRing finger bounds: {} \nPinky finger bounds: {} \nThumb finger bounds: {}\n".format(index_bounds, middle_bounds, ring_bounds, pinky_bounds, thumb_bounds))
