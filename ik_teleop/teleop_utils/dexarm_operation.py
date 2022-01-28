@@ -18,8 +18,8 @@ from move_dexarm import DexArmControl
 
 from copy import deepcopy as copy
 
-HAND_COORD_TOPIC = '/mediapipe_joint_coords'
-CURR_JOINT_STATE_TOPIC = '/allegroHand_0/joint_states'
+HAND_COORD_TOPIC = '/transformed_mediapipe_joint_coords'
+CURR_JOINT_STATE_TOPIC = '/allegroHand/joint_states'
 
 URDF_PATH = "/home/sridhar/dexterous_arm/ik_stuff/ik_teleop/urdf_template/allegro_right.urdf"
 

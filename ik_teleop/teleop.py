@@ -10,7 +10,7 @@ from ik_teleop.teleop_utils.hand_detector import MediapipeJoints
 from ik_teleop.teleop_utils.dexarm_operation import DexArmOp
 from ik_teleop.teleop_utils.mediapipe_visualizer import PlotMediapipeHand
 
-HAND_COORD_TOPIC = '/mediapipe_joint_coords'
+HAND_COORD_TOPIC = '/transformed_mediapipe_joint_coords'
 hand_coordinates = None
 
 CALIBRATION_FILE_PATH = os.path.join(os.getcwd(), 'bound_data', 'calibrated_values.npy')

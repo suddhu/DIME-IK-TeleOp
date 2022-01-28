@@ -5,7 +5,7 @@ import numpy as np
 import rospy
 from std_msgs.msg import Float64MultiArray
 
-POSE_COORD_TOPIC = '/mediapipe_joint_coords'
+POSE_COORD_TOPIC = '/transformed_mediapipe_joint_coords'
 
 class BoundCalibrator(object):
     def __init__(self, storage_dir = os.getcwd()):
