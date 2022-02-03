@@ -1,3 +1,4 @@
+import time
 import numpy as np
 
 import mediapipe
@@ -16,13 +17,12 @@ from hydra import initialize, compose
 
 ABSOLUTE_POSE_COORD_TOPIC = '/absolute_mediapipe_joint_pixels'
 MEDIAPIPE_RGB_IMG_TOPIC = '/mediapipe_rgb_image'
-MEDIAPIPE_DEPTH_IMG_TOPIC = '/mediapipe_depth_image'
 TRANFORMED_POSE_COORD_TOPIC = '/transformed_mediapipe_joint_coords'
 
 MOVING_AVERAGE_LIMIT = 2
 
 class MediapipeJoints(object):
-    def __init__(self, cfg = None, rotation_angle = 0, moving_average = True, normalize = True):
+    def __init__(self, display_image = True, cfg = None, rotation_angle = 0, moving_average = True, normalize = True):
         try:
             rospy.init_node('teleop_camera')
         except:
@@ -51,9 +51,10 @@ class MediapipeJoints(object):
         self.trans_coord_publisher = rospy.Publisher(TRANFORMED_POSE_COORD_TOPIC, Float64MultiArray, queue_size = 1)
 
         self.rgb_image_publisher = rospy.Publisher(MEDIAPIPE_RGB_IMG_TOPIC, Image, queue_size = 1)
-        self.depth_image_publisher = rospy.Publisher(MEDIAPIPE_DEPTH_IMG_TOPIC, Image, queue_size = 1)
 
         self.bridge = CvBridge()
+
+        self.display_image = display_image
 
         self.moving_average = moving_average
         if self.moving_average is True:
@@ -145,14 +146,6 @@ class MediapipeJoints(object):
 
         self.rgb_image_publisher.publish(rgb_image)
 
-    def publish_depth_image(self, depth_image):
-        try:
-            depth_image = self.bridge.cv2_to_imgmsg(depth_image)
-        except CvBridgeError as e:
-            print(e)
-
-        self.depth_image_publisher.publish(depth_image)
-
     def detect(self):
         # Setting the mediapipe hand parameters
         with self.mediapipe_hands.Hands(
@@ -161,9 +154,10 @@ class MediapipeJoints(object):
             min_tracking_confidence = 0.95) as hand:
 
             while True:
+                start = time.time()
+
                 # Getting the image to process
                 rgb_image = camera.getting_image_data(self.pipeline)
-                depth_image = camera.getting_depth_data(self.pipeline)
 
                 if rgb_image is None:
                     print('Did not receive an image. Please wait!')
@@ -193,10 +187,6 @@ class MediapipeJoints(object):
                     absolute_coordinates = self.get_absolute_coords(wrist_position, thumb_knuckle_position, index_knuckle_position, middle_knuckle_position, ring_knuckle_position, pinky_knuckle_position, finger_tip_positions)
                     self.publish_absolute_coords(absolute_coordinates)
 
-                    # Displaying the realtime image
-                    # self.mediapipe_drawing.draw_landmarks(
-                    #     rgb_image, hand_landmarks, self.mediapipe_drawing.HAND_CONNECTIONS)
-
                     if self.moving_average is True:
                         self.moving_average_queue.append(transformed_coords)
 
@@ -212,9 +202,12 @@ class MediapipeJoints(object):
                         self.publish_transformed_coords(transformed_coords)
 
                     # Publishing the rgb and depth image data
+                    rgb_img_pub_start_time = time.time()
                     self.publish_rgb_image(rgb_image)
-                    self.publish_depth_image(depth_image)
+                    rgb_img_pub_end_time = time.time()
 
-                cv2.imshow('MediaPipe Hands', cv2.cvtColor(rgb_image, cv2.COLOR_BGR2RGB))
-                if cv2.waitKey(5) & 0xFF == 27:
-                    break
+                if self.display_image:
+
+                    cv2.imshow('MediaPipe Hands', cv2.cvtColor(rgb_image, cv2.COLOR_BGR2RGB))
+                    if cv2.waitKey(5) & 0xFF == 27:
+                        break
