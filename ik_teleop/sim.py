@@ -4,7 +4,7 @@ import sys
 import numpy as np
 
 # Parameter management imports
-from hydra import initialize, compose
+from hydra.experimental import initialize, compose
 
 # Image based imports
 import cv2
@@ -61,7 +61,8 @@ class TeleOpSim (object):
         
         # Creating a realsense pipeline
         # for cam in self.cfg.realsense.serial_numbers:
-        self.pipeline, config = camera.create_realsense_pipeline(self.cfg.realsense.serial_numbers[3], self.cfg.realsense.resolution, self.cfg.realsense.fps)
+        print(self.cfg.realsense.serial_numbers[0])
+        self.pipeline, config = camera.create_realsense_pipeline(self.cfg.realsense.serial_numbers[0], self.cfg.realsense.resolution, self.cfg.realsense.fps)
         print(config)
         self.pipeline.start(config)
 
@@ -70,7 +71,7 @@ class TeleOpSim (object):
         self.mediapipe_hands = mediapipe.solutions.hands
 
         # Initializing the Alegro Inverse Kinematics based controller
-        self.allegro_control = AllegroIKController(self.cfg.allegro,os.path.join(os.getcwd(),'urdf_template','allegro_right.urdf'))
+        self.allegro_control = AllegroIKController(self.cfg.allegro,os.path.join(os.getcwd(),'ik_teleop', 'urdf_template','allegro_right.urdf'))
 
         # Joint state publisher object
         # self.allegro_pub = AllegroEnv()

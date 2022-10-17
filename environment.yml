@@ -1,0 +1,20 @@
+name: dime
+channels:
+  - conda-forge
+dependencies:
+  - librealsense=2.50.0
+  - python=3.8
+  - pip
+  - hydra
+  - pip:
+    - rospkg
+    - numpy
+    - mediapipe
+    - typing-extensions
+    - pyrealsense2
+    - hydra-core
+    - ikpy
+    - ipython
+    - mujoco
+    - mujoco-py
+    - gym

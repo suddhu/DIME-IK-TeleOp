@@ -2,13 +2,15 @@ import os
 import sys
 import numpy as np
 
+from hydra.utils import get_original_cwd
+
 import rospy
 from std_msgs.msg import Float64MultiArray
 
 POSE_COORD_TOPIC = '/transformed_mediapipe_joint_coords'
 
 class BoundCalibrator(object):
-    def __init__(self, storage_dir = os.getcwd()):
+    def __init__(self, storage_dir):
         try:
             rospy.init_node("hand_bound_calibration")
         except:
@@ -18,7 +20,7 @@ class BoundCalibrator(object):
         rospy.Subscriber(POSE_COORD_TOPIC, Float64MultiArray, self._callback, queue_size = 1)
 
         self.storage_path = os.path.join(storage_dir, "bound_data", "calibrated_values.npy")
-
+        print(self.storage_path)
     def _callback(self, coord_data):
         self.hand_coords = np.array(list(coord_data.data)).reshape(11, 2)
 

@@ -1,3 +1,54 @@
+# Joint movement bound per input coordinate
+jointwise_angle_bounds: 
+  # Index finger angles
+  - 0.05
+  - 0.2
+  - 0.2
+  - 0.2
+  # Middle finger angles
+  - 0.05
+  - 0.2
+  - 0.2
+  - 0.2
+  # Ring finger angles
+  - 0.05
+  - 0.2
+  - 0.2
+  - 0.2
+  # Thumb finger angles
+  - 0.2
+  - 0.1
+  - 0.2
+  - 0.2
+
+# Moving average time steps
+time_steps: 3
+
+# General info
+total_num_joints: 16
+joints_per_finger: 4
+
+# Ros related info
+joint_angle_topic: '/allegroHand_0/joint_states'
+
+# Fingers and their offsets
+fingers:
+  index:
+    name: 'Index'
+    offset: 0
+  
+  middle:
+    name: 'Middle'
+    offset: 4
+
+  ring:
+    name: 'Ring'
+    offset: 8
+
+  thumb:
+    name: 'Thumb'
+    offset: 12
+
 #  Finger info
 links_info:
 

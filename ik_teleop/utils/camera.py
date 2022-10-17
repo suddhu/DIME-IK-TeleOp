@@ -6,11 +6,18 @@ import cv2
 import pyrealsense2 as rs
 
 def create_realsense_pipeline(camera_serial_number, resolution, fps):
-    pipeline = rs.pipeline()
-    config = rs.config()
-    config.enable_device(camera_serial_number)
-    config.enable_stream(rs.stream.color, resolution[0], resolution[1], rs.format.bgr8, fps)
+    # Identify devices
+    device_ls = []
+    for c in rs.context().query_devices():
+        device_ls.append(c.get_info(rs.camera_info(1)))
 
+    # Start stream
+    print(f"Connecting to RealSense cameras ({len(device_ls)} found) ...")
+    for i, device_id in enumerate(device_ls):
+        pipeline = rs.pipeline()
+        config = rs.config()
+        config.enable_device(device_id)
+        config.enable_stream(rs.stream.color, resolution[0], resolution[1], rs.format.bgr8, fps)
     return pipeline, config
 
 def create_realsense_rgb_depth_pipeline(camera_serial_number, resolution, fps):

@@ -5,29 +5,32 @@ import numpy as np
 # Copying imports
 from copy import deepcopy as copy
 
-# Parameter management import
-from hydra import compose, initialize
 
 # Allegro Inverse Kinematics library
 from ik_teleop.ik_core.allegro_ik import AllegroInvKDL
+from omegaconf import DictConfig
 
 # Debugging tools
 from IPython import embed 
 
-class AllegroIKController (object):
-    def __init__(self, cfg = None, urdf_path=None):
+URDF_PATH = "/home/robospare/packages/DIME-IK-TeleOp/ik_teleop/urdf_template/allegro_right.urdf"
+
+class AllegroIKController():
+    def __init__(self, cfg: DictConfig):
         # To ignore scientific notations
         np.set_printoptions(suppress = True)
 
+        # print(OmegaConf.to_yaml(cfg))
         # Importing configs from yaml file
-        if cfg is None:
-            initialize(config_path = "../parameters/allegro")
-            self.cfg = compose(config_name = "allegro_bounds")
-        else:
-            self.cfg = cfg
+        # if cfg is None:
+        #     initialize(config_path = "../parameters/allegro")
+        #     self.cfg = compose(config_name = "allegro_bounds")
+        # else:
+        #     self.cfg = cfg
         
         # Initializing the allegro inverse kinematics object
-        self.allegro_ik = AllegroInvKDL(self.cfg, urdf_path)
+        self.allegro_ik = AllegroInvKDL(cfg = cfg, urdf_path = URDF_PATH)
+        self.cfg = cfg
 
         # Getting the allegro finger info for the offsets
         self.fingers = self.cfg.fingers
@@ -67,11 +70,13 @@ class AllegroIKController (object):
         for idx in range(self.cfg.joints_per_finger):
             desired_angles[self.fingers[finger_type].offset + idx] += clipped_angle_changes[idx]
 
-        return desired_angles
+        return averaged_finger_tip_coords, desired_angles
 
     def bounded_linear_finger_motion(self, finger_type, x_val, y_val, z_val, z_bound_array, target_z_bound_array, moving_average_array, current_angles):
         current_finger_angles = np.array(current_angles[self.fingers[finger_type].offset : self.fingers[finger_type].offset + self.cfg.joints_per_finger])
 
+        # print("current_angles: ", current_angles)
+        # print("current_finger_angles: ", current_finger_angles)
         # Calculating the target coordinate using linear transformation
         target_z_val = (z_val - z_bound_array[0]) * ((target_z_bound_array[-1] - target_z_bound_array[0])/(z_bound_array[-1] - z_bound_array[0])) + target_z_bound_array[0]
 
@@ -101,7 +106,7 @@ class AllegroIKController (object):
         for idx in range(self.cfg.joints_per_finger):
             desired_angles[self.fingers[finger_type].offset + idx] += clipped_angle_changes[idx]
 
-        return desired_angles
+        return averaged_finger_coordinate, desired_angles
 
     def bounded_linear_fingers_motion(self, finger_type, x_val, y_val, z_val, y_bound_array, z_bound_array, target_y_bound_array, target_z_bound_array, moving_average_array, current_angles):
         # Initializing a seed from the current angles
@@ -121,7 +126,6 @@ class AllegroIKController (object):
 
         averaged_finger_coordinate = np.mean(np.array(moving_average_array), 0)
 
-
         # Calculating the desired angle based on the target coordinate using the inverse kinematics function
         calculated_average_angles = self.allegro_ik.finger_inverse_kinematics(finger_type, averaged_finger_coordinate, current_finger_angles)
 
@@ -138,7 +142,7 @@ class AllegroIKController (object):
         for idx in range(self.cfg.joints_per_finger):
             desired_angles[self.fingers[finger_type].offset + idx] += clipped_angle_changes[idx]
 
-        return desired_angles
+        return averaged_finger_coordinate, desired_angles
 
 
     def bounded_all_fingers_motion(self, coordinate_array, moving_average_arrays, current_angles):

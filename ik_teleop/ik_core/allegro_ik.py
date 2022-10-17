@@ -3,7 +3,7 @@ import os
 import numpy as np
 
 # Parameter management import
-from hydra import compose, initialize
+from hydra.experimental import compose, initialize
 
 # Inverse Kinematics Library imports
 import ikpy.chain as chain
@@ -14,13 +14,8 @@ from IPython import embed
 class AllegroInvKDL(object):
     def __init__(self, cfg = None, urdf_path = None):
         # Importing configs from yaml file
-        if cfg is None:
-            # GlobalHydra.instance().clear()
-            initialize(config_path = "../parameters/allegro/")
-            self.cfg = compose(config_name = "allegro_link_info")
-        else:
-            self.cfg = cfg
-
+        self.cfg = cfg
+        # print(self.cfg)
         self.fingers = self.cfg.fingers
 
         if urdf_path is None:
@@ -84,17 +79,20 @@ class AllegroInvKDL(object):
             seed.append(0)
 
         
-
+        # print(input_position)
         output_angles = self.chains[finger_type].inverse_kinematics(input_position, initial_position = seed)
-        #if you need to visualize
-        #     import ikpy.utils.plot as plot_utils
-        #     import matplotlib.pyplot as plt
-        #     my_chain = self.chains[finger_type]
-        #     fig, ax = plot_utils.init_3d_figure()
-        #     my_chain.plot(my_chain.inverse_kinematics(input_position), ax, target=input_position)
-        #     plt.xlim(-0.1, 0.1)
-        #     plt.ylim(-0.1, 0.1)
-        #     plt.show()
+        # if you need to visualize
+        # import ikpy.utils.plot as plot_utils
+        # import matplotlib.pyplot as plt
+        # my_chain = self.chains[finger_type]
+        # fig, ax = plot_utils.init_3d_figure()
+        # my_chain.plot(my_chain.inverse_kinematics(input_position), ax, target=input_position)
+        # ax.scatter3D(input_position[0, :], input_position[1, :], input_position[2, :])
+        # plt.xlim(-0.1, 0.1)
+        # plt.ylim(-0.1, 0.1)
+        # plt.show(block=False)
+        # plt.pause(1)
+        # plt.close()
 
 
                     

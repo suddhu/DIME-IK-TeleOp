@@ -1,5 +1,4 @@
 defaults:
-  - _self_
   - realsense
   - mediapipe_info
   - allegro/allegro_bounds

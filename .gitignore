@@ -10,6 +10,7 @@ ik_teleop/teleop_utils/__pycache__/*
 ik_teleop/core/__pycache__/*
 ik_teleop/__pycache__/*
 ik_teleop/log/*
+ik_teleop/outputs/*
 
 ik_teleop/bound_data/*
 

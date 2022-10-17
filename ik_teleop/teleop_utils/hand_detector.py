@@ -13,7 +13,7 @@ from cv_bridge import CvBridge, CvBridgeError
 import ik_teleop.utils.camera as camera
 import ik_teleop.utils.joint_handling as joint_handlers
 
-from hydra import initialize, compose
+from hydra.experimental import initialize, compose
 
 ABSOLUTE_POSE_COORD_TOPIC = '/absolute_mediapipe_joint_pixels'
 MEDIAPIPE_RGB_IMG_TOPIC = '/mediapipe_rgb_image'

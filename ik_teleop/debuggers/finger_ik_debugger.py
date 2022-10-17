@@ -2,7 +2,7 @@
 import numpy as np
 
 # Parameter management imports
-from hydra import initialize, compose
+from hydra.experimental import initialize, compose
 
 # Imports to get the current joint state
 import rospy 

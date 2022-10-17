@@ -7,7 +7,11 @@ import rospy
 from std_msgs.msg import Float64MultiArray
 
 from ik_teleop.teleop_utils.hand_detector import MediapipeJoints
-from ik_teleop.teleop_utils.dexarm_operation import DexArmOp
+
+try:
+    from ik_teleop.teleop_utils.dexarm_operation import DexArmOp
+except:
+    pass
 from ik_teleop.teleop_utils.mediapipe_visualizer import PlotMediapipeHand
 
 HAND_COORD_TOPIC = '/transformed_mediapipe_joint_coords'
@@ -60,12 +64,6 @@ if __name__ == '__main__':
 
     print("Keep your hand under the camera to display the graph.")
     time.sleep(3)
-
-    print("\n***************************************************************\n     Starting controller process \n***************************************************************")
-    controller_process = Process(target = robot_controller)
-    controller_process.start()
-    print("\nController process started!\n")    
     
     det_process.join()
     vis_process.join()
-    controller_process.join()

@@ -5,7 +5,7 @@ import numpy as np
 import cv2
 
 # Parameter management import
-from hydra import compose, initialize
+from hydra.experimental import compose, initialize
 
 # Imports to plot the heatmaps
 import matplotlib.pyplot as plt
